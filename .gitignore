@@ -1,0 +1,21 @@
+# Session & runtime data
+projects/
+plans/
+history.jsonl
+cache/
+debug/
+downloads/
+file-history/
+paste-cache/
+shell-snapshots/
+session-env/
+ide/
+stats-cache.json
+statsig/
+tasks/
+teams/
+telemetry/
+todos/
+backups/
+plugins/
+mcp-needs-auth-cache.json
