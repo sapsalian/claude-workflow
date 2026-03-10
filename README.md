@@ -21,7 +21,6 @@ Codex와 함께 사용할 때는 [codex-workflow](https://github.com/sapsalian/c
 ### 사전 조건
 
 - [Claude Code](https://claude.ai/code) 설치
-- Python 3 설치 (`python3 --version` 확인)
 - 이 저장소 접근 가능한 SSH 키 설정
 
 ### 방법 1: ~/.claude가 없는 경우 (새 설치)
@@ -67,13 +66,19 @@ chmod +x hooks/auto-approve-exit-plan.sh  # 권한 재확인
 2. **Step 2**: 전체 계획 수립 (plan mode + Q&A 최소 3라운드) → plan 파일 생성
 3. **Step 3**: 모든 Phase 세부 설계 (plan mode + Q&A 최소 3라운드) → 각 Phase `세부 설계` 섹션 채우기
 4. **Step 4**: 모든 Phase TDD 구현 (테스트 먼저 → 구현 → 통과 → 커밋)
-- 각 단계 전환 시 AskUserQuestion으로 사용자 확인 후 진행
+  - 각 단계 전환 시 AskUserQuestion으로 사용자 확인 후 진행
 
 ### Codex와 협업할 때
 
-- `/dev-design`: Claude Code에서 설계 완료 → plan 파일에 세부 설계 채우기
-- Codex `/dev-impl`: plan 픽업 → 처방 검토 → 구현
-- 복귀 조건: 복잡한 디버깅, 구조 변경, 새 Phase 세부 설계
+**설계와 구현을 분리할 때:**
+- Claude Code `/dev-design` → plan 파일의 `세부 설계` 섹션 채우기
+- Codex `dev-impl` → plan 픽업 → 처방 검토 → 구현
+
+**양방향 핸드오프:**
+- Claude Code → Codex: 세부 설계 완료된 Phase부터 `dev-impl`로
+- Codex → Claude Code: 복잡한 디버깅, 구조 변경, 새 Phase 세부 설계
+
+**핸드오프 신호**: plan 파일 각 Phase의 `#### 세부 설계` 섹션이 채워진 상태
 
 ### 자동화 범위
 
