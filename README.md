@@ -2,6 +2,8 @@
 
 Claude Code 전역 설정 — `/develop` 워크플로우 자동화.
 
+Codex와 함께 사용할 때는 [codex-workflow](https://github.com/sapsalian/codex-workflow) 설치가 필요합니다.
+
 ## 포함 파일
 
 | 파일 | 역할 |
@@ -9,7 +11,10 @@ Claude Code 전역 설정 — `/develop` 워크플로우 자동화.
 | `settings.json` | 전역 권한 규칙 + PermissionRequest 훅 |
 | `CLAUDE.md` | 전역 워크플로우 행동 규칙, Codex 협업 규칙 |
 | `hooks/auto-approve-exit-plan.sh` | ExitPlanMode 자동 승인 훅 |
-| `skills/develop/SKILL.md` | `/develop` 명령어 스킬 |
+| `skills/develop/SKILL.md` | `/develop` — dev-full (Q&A + 설계 + 구현 전 과정) |
+| `skills/dev-design/SKILL.md` | `/dev-design` — Q&A + plan 생성 전담 |
+| `skills/dev-impl/SKILL.md` | `/dev-impl` — plan 픽업 + 설계 검토 + 구현 |
+| `skills/cothink/SKILL.md` | `/cothink` — plan 없이 Q&A 반복 후 요청 수행 |
 
 ## 설치 (새 컴퓨터)
 
@@ -47,23 +52,29 @@ git pull
 chmod +x hooks/auto-approve-exit-plan.sh  # 권한 재확인
 ```
 
-## 사용법
+## 스킬 가이드
 
-프로젝트 루트에서 Claude Code 세션 시작 후:
+| 스킬 | 언제 쓰나 |
+|------|----------|
+| `/develop` (dev-full) | Claude Code 단독으로 설계부터 구현까지 전 과정 |
+| `/dev-design` | 설계만 먼저 완료. 구현은 나중에 dev-impl로 |
+| `/dev-impl` | 완성된 plan 픽업 후 설계 검토 + 구현 |
+| `/cothink` | plan 없이 Q&A 반복 후 단일 요청 수행 |
 
-```
-/develop <요구사항>
-/develop          ← 기존 plan 목록 보기 및 재개
-```
-
-### 워크플로우 흐름
+### 워크플로우 흐름 (dev-full)
 
 1. **Step 1**: 기존 plan 파일 탐색 (재개 or 새 계획)
-2. **Step 2**: 전체 계획 수립 (plan mode + Q&A 최소 3라운드) → plan 파일 생성 → Codex 전환 안내
+2. **Step 2**: 전체 계획 수립 (plan mode + Q&A 최소 3라운드) → plan 파일 생성
 3. **Step 3**: Phase별 반복
    - 세부 설계 (plan mode + Q&A 최소 3라운드) → plan 파일 `세부 설계` 섹션 채우기
-   - 구현은 Codex에 위임 (세부 설계 완료된 Phase부터)
-   - 필요 시 Claude Code 복귀 (복잡한 디버깅, 구조 변경, 새 Phase 세부 설계)
+   - TDD 구현 (테스트 먼저 → 구현 → 통과 → 커밋)
+   - Phase 완료 커밋
+
+### Codex와 협업할 때
+
+- `/dev-design`: Claude Code에서 설계 완료 → plan 파일에 세부 설계 채우기
+- Codex `/dev-impl`: plan 픽업 → 처방 검토 → 구현
+- 복귀 조건: 복잡한 디버깅, 구조 변경, 새 Phase 세부 설계
 
 ### 자동화 범위
 
