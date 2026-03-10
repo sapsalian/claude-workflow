@@ -53,36 +53,43 @@ Glob 도구로 `.claude/plans/*.md` 파일 목록 확인:
 
 6. ExitPlanMode 호출
 
-ExitPlanMode 호출 후 다음 안내:
-
-> "전체 설계가 완료됐습니다.
->  각 Phase 세부 설계 Q&A를 시작할까요?"
+ExitPlanMode 호출 후 **MANDATORY** — AskUserQuestion 도구를 호출하여 "Phase 1 세부 설계 Q&A를 시작할까요?" 확인:
+- Yes → Step 3으로 진행
+- No → 중단. 다음번 `/dev-design` 재개 시 Step 3(세부 설계)부터.
 
 ## Step 3: Phase 세부 설계 (설계만, 구현 없음)
 
-각 Phase마다 아래 순서 반복:
+**각 Phase마다 아래 순서 반복:**
+
+TodoWrite 호출: `[{ content: "Phase N: <phase-title> 세부 설계", status: "in_progress" }]`
 
 **EnterPlanMode 도구를 호출**하여 plan 모드로 전환 후:
 
 1. **Q&A 라운드 전 고려사항 출력** (동일 형식):
    - CLAUDE.md의 "Phase 세부 설계 시 검토 체크리스트" 전체 항목 검토
-   - 질문할 사항이 없으면 조기 종료
 
 2. **Q&A 라운드** (최소 3회)
 
 3. plan 파일 해당 Phase의 `세부 설계` + `Sub-steps` 섹션 채우기
 
-4. 프로젝트 plan 파일 해당 Phase 상태를 `[⏳ 대기]` 유지 (구현 미시작)
+4. plan 파일 해당 Phase 상태를 `[⏳ 대기]` 유지 (구현 미시작)
 
 5. ExitPlanMode 호출
 
-6. 다음 Phase로 이동 (구현은 하지 않음)
+ExitPlanMode 호출 후 **MANDATORY** — AskUserQuestion 도구를 호출:
+
+- **마지막 Phase가 아닌 경우**: "Phase N+1 세부 설계를 시작할까요?"
+  - Yes → 다음 Phase 세부 설계로 계속
+  - No → 중단. 다음번 재개 시 남은 Phase 세부 설계부터.
+
+- **마지막 Phase인 경우**: "모든 Phase 세부 설계가 완료됐습니다. 지금 바로 /dev-impl로 구현을 시작하시겠습니까? (또는 나중에 별도로 진행 가능)"
+  - Yes/No 모두 중단 (구현은 /dev-impl 호출로 별도 진행)
 
 ## 전체 완료
 
-모든 Phase `세부 설계` 섹션 채우기 완료 후:
+모든 Phase `세부 설계` 섹션 채우기 완료:
 
-> "설계가 완료됐습니다. dev-impl(Claude 또는 Codex)로 구현을 시작할 수 있습니다."
+> "설계가 완료됐습니다. /dev-impl(Claude 또는 Codex)로 구현을 시작할 수 있습니다."
 
 구현 시점은 사용자 판단 — 바로 시작해도 되고, 나중에 진행해도 됩니다.
 

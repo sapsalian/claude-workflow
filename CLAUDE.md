@@ -1,8 +1,8 @@
 # Claude 전역 규칙
 
-## /develop 워크플로우 규칙
+## 스킬 워크플로우 공통 규칙
 
-`/develop` 스킬이 호출될 때 아래 워크플로우를 정확히 따를 것.
+`/dev-full`, `/dev-design`, `/dev-impl` 스킬에 공통 적용되는 규칙.
 
 ### Q&A 라운드 가이드라인
 
@@ -76,25 +76,6 @@
   - 시스템 plan 파일: ExitPlanMode 승인 UI용 (임시)
   - 프로젝트 plan 파일: 영구 기록 + Phase 상태 추적
 
-## Codex CLI 협업 규칙
-
-Claude Code(의사)와 Codex(간호사)는 피어 관계. 역할은 아래와 같이 분리.
-
-| | Claude Code | Codex |
-|---|---|---|
-| 역할 | 설계/처방 | 처방 검토 + 구현 |
-| 담당 작업 | 전체 설계 Q&A, 각 Phase 세부 설계 Q&A, plan 파일 작성 | plan 픽업, 처방 검토, 순수 구현 |
-
-### 전환 기준
-
-**Claude Code → Codex**:
-- 구현할 Phase의 `세부 설계` Q&A가 완료되고, plan 파일의 해당 Phase `#### 세부 설계` 섹션이 채워진 시점
-
-**Codex → Claude Code 복귀**:
-- 복잡한 디버깅 (구조 파악 필요)
-- 구조 변경 또는 설계 재검토 필요
-- 새로운 Phase 세부 설계 Q&A 필요
-
 ### 세부 설계 섹션 채우기
 
 Phase 세부 설계 Q&A가 끝나면 plan 파일의 해당 Phase `#### 세부 설계` 섹션에 결과 기록:
@@ -103,3 +84,27 @@ Phase 세부 설계 Q&A가 끝나면 plan 파일의 해당 Phase `#### 세부 �
 - 데이터 흐름
 - 에러/엣지 케이스 처리 방식
 - Sub-steps (구현 순서 포함)
+
+## Codex CLI 협업 규칙
+
+Claude Code와 Codex는 **피어 관계**. 양쪽 모두 동일한 4종 스킬을 보유.
+
+| 스킬 | 용도 |
+|---|---|
+| `dev-full` | Q&A + 설계 + 구현 전 과정 (독립 실행) |
+| `dev-design` | Q&A + plan 생성 전담. 구현은 dev-impl에 핸드오프 |
+| `dev-impl` | plan 픽업 + 설계 검토 + 구현 |
+| `cothink` | plan 모드 없이 Q&A 반복 후 요청 수행 |
+
+### 핸드오프 패턴
+
+**설계와 구현을 분리할 때:**
+- Claude Code `/dev-design` → plan 파일의 `세부 설계` 섹션 채우기
+- Codex `/dev-impl` → plan 픽업 → 설계 검토 → 구현
+
+**핸드오프 신호**: plan 파일 각 Phase의 `#### 세부 설계` 섹션이 채워진 상태
+
+**Codex → Claude Code 복귀 조건**:
+- 복잡한 디버깅 (구조 파악 필요)
+- 구조 변경 또는 설계 재검토 필요
+- 새로운 Phase 세부 설계 Q&A 필요

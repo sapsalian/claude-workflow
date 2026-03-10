@@ -29,6 +29,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'REMINDER: Plan mode exited. BEFORE proceeding, you MUST call AskUserQuestion to confirm with the user. Do NOT automatically start the next phase or implementation.'"
+          }
+        ]
+      }
     ]
   }
 }
