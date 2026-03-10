@@ -59,6 +59,12 @@ Glob 도구로 `.claude/plans/*.md` 파일 목록 확인:
 
 6. ExitPlanMode 호출
 
+ExitPlanMode 호출 후 다음 안내:
+
+> "전체 설계가 완료됐습니다.
+>  각 Phase 세부 설계 Q&A를 여기서 진행한 후 Codex에 구현을 넘기는 것을 권장합니다.
+>  Phase 세부 설계를 시작할까요?"
+
 ## Step 3: Phase 반복 실행
 
 각 Phase마다 아래 순서 반복:
@@ -127,15 +133,24 @@ sub-step이 없으면:
 ## Phases
 
 ### Phase 1: <phase-title> [⏳ 대기]
-<간략한 Phase 목표>
-<!-- sub-step이 있으면:
-- Step 1: <설명>
-- Step 2: <설명>
--->
+**Goal**: <한 줄 목표>
+
+#### 세부 설계
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+
+#### Sub-steps
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+- [ ] Step 1: ...
+- [ ] Step 2: ...
 
 ### Phase 2: <phase-title> [⏳ 대기]
-<간략한 Phase 목표>
+**Goal**: <한 줄 목표>
 
----
-<!-- Phase 세부 설계는 해당 Phase 시작 시 아래에 추가됨 -->
+#### 세부 설계
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+
+#### Sub-steps
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+- [ ] Step 1: ...
+- [ ] Step 2: ...
 ```

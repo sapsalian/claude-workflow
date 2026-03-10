@@ -75,3 +75,31 @@
 - 시스템 plan 파일(`~/.claude/plans/`)과 프로젝트 plan 파일 **둘 다** 유지
   - 시스템 plan 파일: ExitPlanMode 승인 UI용 (임시)
   - 프로젝트 plan 파일: 영구 기록 + Phase 상태 추적
+
+## Codex CLI 협업 규칙
+
+Claude Code(의사)와 Codex(간호사)는 피어 관계. 역할은 아래와 같이 분리.
+
+| | Claude Code | Codex |
+|---|---|---|
+| 역할 | 설계/처방 | 처방 검토 + 구현 |
+| 담당 작업 | 전체 설계 Q&A, 각 Phase 세부 설계 Q&A, plan 파일 작성 | plan 픽업, 처방 검토, 순수 구현 |
+
+### 전환 기준
+
+**Claude Code → Codex**:
+- 구현할 Phase의 `세부 설계` Q&A가 완료되고, plan 파일의 해당 Phase `#### 세부 설계` 섹션이 채워진 시점
+
+**Codex → Claude Code 복귀**:
+- 복잡한 디버깅 (구조 파악 필요)
+- 구조 변경 또는 설계 재검토 필요
+- 새로운 Phase 세부 설계 Q&A 필요
+
+### 세부 설계 섹션 채우기
+
+Phase 세부 설계 Q&A가 끝나면 plan 파일의 해당 Phase `#### 세부 설계` 섹션에 결과 기록:
+- 핵심 설계 결정 사항
+- UI 컴포넌트 구조 및 상태
+- 데이터 흐름
+- 에러/엣지 케이스 처리 방식
+- Sub-steps (구현 순서 포함)
