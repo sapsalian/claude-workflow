@@ -1,9 +1,9 @@
 ---
-description: 구조적 개발 워크플로우 시작. 요구사항 분석 → Phase 설계 → Q&A → Phase별 구현.
+description: Q&A + 설계 + 구현 전 과정. Codex 없이 Claude Code 단독으로 전체 개발 수행. (dev-full)
 user-invocable: true
 ---
 
-# /develop 워크플로우
+# /develop 워크플로우 (dev-full)
 
 ## 요구사항
 $ARGUMENTS
@@ -62,8 +62,7 @@ Glob 도구로 `.claude/plans/*.md` 파일 목록 확인:
 ExitPlanMode 호출 후 다음 안내:
 
 > "전체 설계가 완료됐습니다.
->  각 Phase 세부 설계 Q&A를 여기서 진행한 후 Codex에 구현을 넘기는 것을 권장합니다.
->  Phase 세부 설계를 시작할까요?"
+>  Phase 세부 설계 Q&A를 시작합니다. Phase 1부터 진행할까요?"
 
 ## Step 3: Phase 반복 실행
 
