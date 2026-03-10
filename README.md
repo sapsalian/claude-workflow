@@ -7,7 +7,7 @@ Claude Code 전역 설정 — `/develop` 워크플로우 자동화.
 | 파일 | 역할 |
 |------|------|
 | `settings.json` | 전역 권한 규칙 + PermissionRequest 훅 |
-| `CLAUDE.md` | 전역 워크플로우 행동 규칙 |
+| `CLAUDE.md` | 전역 워크플로우 행동 규칙, Codex 협업 규칙 |
 | `hooks/auto-approve-exit-plan.sh` | ExitPlanMode 자동 승인 훅 |
 | `skills/develop/SKILL.md` | `/develop` 명령어 스킬 |
 
@@ -53,22 +53,17 @@ chmod +x hooks/auto-approve-exit-plan.sh  # 권한 재확인
 
 ```
 /develop <요구사항>
-```
-
-예시:
-```
-/develop 사용자 인증 기능 추가
 /develop          ← 기존 plan 목록 보기 및 재개
 ```
 
 ### 워크플로우 흐름
 
 1. **Step 1**: 기존 plan 파일 탐색 (재개 or 새 계획)
-2. **Step 2**: 전체 계획 수립 (plan mode + Q&A 최대 3회)
-3. **Step 3**: Phase별 반복 실행
-   - 세부 설계 (plan mode + Q&A)
-   - 구현 (TDD: 테스트 먼저 → 구현 → 테스트 통과 → 커밋)
-   - Phase 완료 커밋
+2. **Step 2**: 전체 계획 수립 (plan mode + Q&A 최소 3라운드) → plan 파일 생성 → Codex 전환 안내
+3. **Step 3**: Phase별 반복
+   - 세부 설계 (plan mode + Q&A 최소 3라운드) → plan 파일 `세부 설계` 섹션 채우기
+   - 구현은 Codex에 위임 (세부 설계 완료된 Phase부터)
+   - 필요 시 Claude Code 복귀 (복잡한 디버깅, 구조 변경, 새 Phase 세부 설계)
 
 ### 자동화 범위
 
