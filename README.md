@@ -1,6 +1,6 @@
 # Claude Workflow Config
 
-Claude Code 전역 설정 — 개발 워크플로우 스킬 자동화.
+Claude가 자의적으로 진행하지 않도록 제어하는 개발 워크플로우 자동화 — Q&A → 설계 → 구현 각 단계마다 사용자 확인을 강제하고, plan 파일로 상태를 추적합니다.
 
 Codex와 함께 사용할 때는 [codex-workflow](https://github.com/sapsalian/codex-workflow) 설치가 필요합니다.
 
@@ -15,6 +15,16 @@ Codex와 함께 사용할 때는 [codex-workflow](https://github.com/sapsalian/c
 | `skills/dev-design/SKILL.md` | `/dev-design` — Q&A + plan 생성 전담 |
 | `skills/dev-impl/SKILL.md` | `/dev-impl` — plan 픽업 + 설계 검토 + 구현 |
 | `skills/cothink/SKILL.md` | `/cothink` — plan 없이 Q&A 반복 후 요청 수행 |
+| `plans/` | plan mode 세션 중 생성되는 임시 plan 파일 (ExitPlanMode 승인 UI에 표시) |
+
+## 자동화 범위
+
+- Bash 명령어 자동 승인 (아래 위험 명령 제외)
+- ExitPlanMode 자동 승인 (PermissionRequest 훅)
+
+## 차단된 명령어
+
+`rm -rf`, `git push --force`, `git reset --hard`, `git clean -f`, `git branch -D`, `git commit --no-verify`, `sudo rm`
 
 ## 설치 (새 컴퓨터)
 
@@ -42,6 +52,11 @@ chmod +x ~/.claude/hooks/auto-approve-exit-plan.sh
 ```
 
 Claude Code 재시작 후 바로 적용됩니다.
+
+## 신규 프로젝트 시작
+
+1. 프로젝트에 [claude-workflow](https://github.com/sapsalian/claude-workflow) 적용 (`.claude/plans/`, `CLAUDE.md` 생성)
+2. `/dev-full <요구사항>` — Q&A → 전체 설계 → Phase별 세부 설계 → 구현 전 과정 진행
 
 ## 업데이트
 
@@ -79,12 +94,3 @@ chmod +x hooks/auto-approve-exit-plan.sh  # 권한 재확인
 - Codex → Claude Code: 복잡한 디버깅, 구조 변경, 새 Phase 세부 설계
 
 **핸드오프 신호**: plan 파일 각 Phase의 `#### 세부 설계` 섹션이 채워진 상태
-
-### 자동화 범위
-
-- Bash 명령어 자동 승인 (아래 위험 명령 제외)
-- ExitPlanMode 자동 승인 (PermissionRequest 훅)
-
-### 차단된 명령어
-
-`rm -rf`, `git push --force`, `git reset --hard`, `git clean -f`, `git branch -D`, `git commit --no-verify`, `sudo rm`
