@@ -109,6 +109,9 @@ ExitPlanMode 호출 후 **MANDATORY** — AskUserQuestion 도구를 호출:
 ### Phase 1: <phase-title> [⏳ 대기]
 **Goal**: <한 줄 목표>
 
+#### 사전 결정사항 / 참고
+<!-- 전체 설계 Q&A에서 결정된 사항 및 세부 설계 시 참고할 사항 작성 -->
+
 #### 세부 설계
 <!-- dev-design Phase Q&A 완료 후 채워짐 -->
 
@@ -119,6 +122,9 @@ ExitPlanMode 호출 후 **MANDATORY** — AskUserQuestion 도구를 호출:
 
 ### Phase 2: <phase-title> [⏳ 대기]
 **Goal**: <한 줄 목표>
+
+#### 사전 결정사항 / 참고
+<!-- 전체 설계 Q&A에서 결정된 사항 및 세부 설계 시 참고할 사항 작성 -->
 
 #### 세부 설계
 <!-- dev-design Phase Q&A 완료 후 채워짐 -->
